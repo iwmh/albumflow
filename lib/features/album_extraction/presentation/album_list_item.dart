@@ -1,3 +1,4 @@
+import 'package:albumflow/core/command/command.dart';
 import 'package:albumflow/core/theme/app_colors.dart';
 import 'package:albumflow/features/album_extraction/domain/album.dart';
 import 'package:albumflow/features/album_extraction/presentation/quick_add_controller.dart';
@@ -96,54 +97,57 @@ class _QuickAddChip extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final status = ref.watch(
-      quickAddControllerProvider.select(
-        (m) => m[quickAddKey(album.id, target.id)] ?? QuickAddStatus.idle,
-      ),
-    );
+    final command = ref
+        .watch(quickAddControllerProvider.notifier)
+        .commandFor(albumId: album.id, targetId: target.id);
 
-    final (Widget avatar, bool enabled) = switch (status) {
-      QuickAddStatus.idle => (const Icon(Icons.add, size: 18), true),
-      QuickAddStatus.running => (
-        const SizedBox(
-          width: 16,
-          height: 16,
-          child: CircularProgressIndicator(strokeWidth: 2),
-        ),
-        false,
-      ),
-      QuickAddStatus.success => (
-        const Icon(Icons.check, size: 18, color: AppColors.spotifyGreen),
-        true,
-      ),
-      QuickAddStatus.error => (const Icon(Icons.refresh, size: 18), true),
-    };
+    return ListenableBuilder(
+      listenable: command,
+      builder: (context, _) {
+        final (Widget avatar, bool enabled) = command.running
+            ? (
+                const SizedBox(
+                  width: 16,
+                  height: 16,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+                false,
+              )
+            : command.isCompleted
+            ? (
+                const Icon(
+                  Icons.check,
+                  size: 18,
+                  color: AppColors.spotifyGreen,
+                ),
+                true,
+              )
+            : command.isError
+            ? (const Icon(Icons.refresh, size: 18), true)
+            : (const Icon(Icons.add, size: 18), true);
 
-    return ActionChip(
-      avatar: avatar,
-      label: Text(
-        target.name,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      ),
-      onPressed: enabled
-          ? () async {
-              await ref
-                  .read(quickAddControllerProvider.notifier)
-                  .add(albumId: album.id, targetPlaylistId: target.id);
-              if (!context.mounted) return;
-              final result = ref
-                  .read(quickAddControllerProvider.notifier)
-                  .statusFor(albumId: album.id, targetId: target.id);
-              final message = result == QuickAddStatus.success
-                  ? '「${target.name}」に「${album.title}」を追加しました'
-                  : '追加に失敗しました。もう一度お試しください';
-              ScaffoldMessenger.of(context)
-                ..hideCurrentSnackBar()
-                ..showSnackBar(SnackBar(content: Text(message)));
-            }
-          : null,
+        return ActionChip(
+          avatar: avatar,
+          label: Text(
+            target.name,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          onPressed: enabled ? () => _add(context, command) : null,
+        );
+      },
     );
+  }
+
+  Future<void> _add(BuildContext context, Command0<void> command) async {
+    await command.execute();
+    if (!context.mounted) return;
+    final message = command.isCompleted
+        ? '「${target.name}」に「${album.title}」を追加しました'
+        : '追加に失敗しました。もう一度お試しください';
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(message)));
   }
 }
 

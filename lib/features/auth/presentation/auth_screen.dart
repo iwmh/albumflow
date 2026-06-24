@@ -1,3 +1,5 @@
+import 'package:albumflow/core/command/command.dart';
+import 'package:albumflow/core/command/result.dart';
 import 'package:albumflow/core/config/env.dart';
 import 'package:albumflow/core/error/app_error.dart';
 import 'package:albumflow/features/auth/presentation/auth_controller.dart';
@@ -10,9 +12,7 @@ class AuthScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final authState = ref.watch(authControllerProvider);
-    final isBusy = authState.isLoading;
-
+    // ディープリンクのコールバックで完了する completeLogin() のエラーを監視する。
     ref.listen(authControllerProvider, (_, next) {
       if (next.hasError && !next.isLoading) {
         final error = next.error;
@@ -24,6 +24,10 @@ class AuthScreen extends ConsumerWidget {
           ..showSnackBar(SnackBar(content: Text(message)));
       }
     });
+
+    final loginCommand = ref
+        .watch(authControllerProvider.notifier)
+        .loginCommand;
 
     return Scaffold(
       body: SafeArea(
@@ -50,19 +54,25 @@ class AuthScreen extends ConsumerWidget {
                 if (!Env.hasSpotifyClientId)
                   const _ClientIdWarning()
                 else
-                  FilledButton.icon(
-                    onPressed: isBusy
-                        ? null
-                        : () =>
-                              ref.read(authControllerProvider.notifier).login(),
-                    icon: isBusy
-                        ? const SizedBox(
-                            width: 18,
-                            height: 18,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                        : const Icon(Icons.login),
-                    label: const Text('Spotify でログイン'),
+                  ListenableBuilder(
+                    listenable: loginCommand,
+                    builder: (context, _) {
+                      return FilledButton.icon(
+                        onPressed: loginCommand.running
+                            ? null
+                            : () => _login(context, loginCommand),
+                        icon: loginCommand.running
+                            ? const SizedBox(
+                                width: 18,
+                                height: 18,
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 2,
+                                ),
+                              )
+                            : const Icon(Icons.login),
+                        label: const Text('Spotify でログイン'),
+                      );
+                    },
                   ),
               ],
             ),
@@ -70,6 +80,18 @@ class AuthScreen extends ConsumerWidget {
         ),
       ),
     );
+  }
+}
+
+/// ログイン Command を実行し、失敗時にエラーメッセージを表示する。
+Future<void> _login(BuildContext context, Command0<void> loginCommand) async {
+  await loginCommand.execute();
+  if (!context.mounted) return;
+  final result = loginCommand.result;
+  if (result is Err<void>) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(result.error.displayMessage)));
   }
 }
 

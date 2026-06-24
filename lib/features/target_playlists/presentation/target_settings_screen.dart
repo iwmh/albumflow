@@ -1,3 +1,5 @@
+import 'package:albumflow/core/command/result.dart';
+import 'package:albumflow/core/error/app_error.dart';
 import 'package:albumflow/core/widgets/error_view.dart';
 import 'package:albumflow/core/widgets/loading_view.dart';
 import 'package:albumflow/features/playlists/presentation/playlists_controller.dart';
@@ -47,9 +49,7 @@ class TargetSettingsScreen extends ConsumerWidget {
                         overflow: TextOverflow.ellipsis,
                       ),
                       subtitle: Text('${playlist.totalTracks} 曲'),
-                      onChanged: (_) => ref
-                          .read(targetSettingsControllerProvider.notifier)
-                          .toggle(playlist.id),
+                      onChanged: (_) => _toggle(context, ref, playlist.id),
                     );
                   },
                 ),
@@ -59,5 +59,24 @@ class TargetSettingsScreen extends ConsumerWidget {
         },
       ),
     );
+  }
+}
+
+/// 登録先の ON/OFF Command を実行し、失敗時にエラーメッセージを表示する。
+Future<void> _toggle(
+  BuildContext context,
+  WidgetRef ref,
+  String playlistId,
+) async {
+  final toggleCommand = ref
+      .read(targetSettingsControllerProvider.notifier)
+      .toggleCommand;
+  await toggleCommand.execute(playlistId);
+  if (!context.mounted) return;
+  final result = toggleCommand.result;
+  if (result is Err<void>) {
+    ScaffoldMessenger.of(context)
+      ..hideCurrentSnackBar()
+      ..showSnackBar(SnackBar(content: Text(result.error.displayMessage)));
   }
 }

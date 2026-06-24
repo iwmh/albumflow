@@ -11,6 +11,8 @@ part of 'auth_controller.dart';
 /// 認証状態の ViewModel。
 ///
 /// 状態は `AsyncValue<SpotifyAuth?>`（`null` = 未ログイン）。
+/// ログイン・ログアウトの実行状態は [loginCommand] / [logoutCommand]
+/// （Commands パターン）で公開する。
 
 @ProviderFor(AuthController)
 final authControllerProvider = AuthControllerProvider._();
@@ -18,11 +20,15 @@ final authControllerProvider = AuthControllerProvider._();
 /// 認証状態の ViewModel。
 ///
 /// 状態は `AsyncValue<SpotifyAuth?>`（`null` = 未ログイン）。
+/// ログイン・ログアウトの実行状態は [loginCommand] / [logoutCommand]
+/// （Commands パターン）で公開する。
 final class AuthControllerProvider
     extends $AsyncNotifierProvider<AuthController, SpotifyAuth?> {
   /// 認証状態の ViewModel。
   ///
   /// 状態は `AsyncValue<SpotifyAuth?>`（`null` = 未ログイン）。
+  /// ログイン・ログアウトの実行状態は [loginCommand] / [logoutCommand]
+  /// （Commands パターン）で公開する。
   AuthControllerProvider._()
     : super(
         from: null,
@@ -42,11 +48,13 @@ final class AuthControllerProvider
   AuthController create() => AuthController();
 }
 
-String _$authControllerHash() => r'd224e8518b7dffc4667fa1a30232e2a43a90eae7';
+String _$authControllerHash() => r'20b854460f2b8dc632cfc34b8917061a645cd086';
 
 /// 認証状態の ViewModel。
 ///
 /// 状態は `AsyncValue<SpotifyAuth?>`（`null` = 未ログイン）。
+/// ログイン・ログアウトの実行状態は [loginCommand] / [logoutCommand]
+/// （Commands パターン）で公開する。
 
 abstract class _$AuthController extends $AsyncNotifier<SpotifyAuth?> {
   FutureOr<SpotifyAuth?> build();
@@ -110,4 +118,4 @@ final class IsAuthenticatedProvider
   }
 }
 
-String _$isAuthenticatedHash() => r'1dd646925b2cae24d844b34ad90bbeceea014015';
+String _$isAuthenticatedHash() => r'04e26ab9121c01373a46f077ec7c6e8d8fd8337a';

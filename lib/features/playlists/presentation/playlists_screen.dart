@@ -28,7 +28,10 @@ class PlaylistsScreen extends ConsumerWidget {
           IconButton(
             tooltip: 'ログアウト',
             icon: const Icon(Icons.logout),
-            onPressed: () => ref.read(authControllerProvider.notifier).logout(),
+            onPressed: () => ref
+                .read(authControllerProvider.notifier)
+                .logoutCommand
+                .execute(),
           ),
         ],
       ),

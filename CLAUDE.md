@@ -46,6 +46,7 @@ lib/
 | Repository | `*Repository`（抽象 + 実装）。単一の信頼できる情報源 |
 | Service | `SpotifyApiClient`(Dio) / `SecureTokenStorage` / `TargetPlaylistStorage`（ステートレス） |
 | UseCase | `ExtractAlbumsUseCase` / `AddAlbumToPlaylistUseCase` |
+| Command | `Command0` / `Command1`（`core/command/`）。ユーザー操作（ボタン押下）の実行中・成功・失敗を ViewModel が公開 |
 
 依存方向: `View → Controller → UseCase/Repository(抽象) → Repository実装 → Service`。外側→内側のみ。`core` は feature に依存しない（auth のトークン実装は `tokenRepositoryProvider` の override で注入）。
 
@@ -76,6 +77,37 @@ ref.watch(featureControllerProvider).when(
 - 関数プロバイダーの引数は `Ref ref`（生成された `FooRef` は廃止）。
 - `ref.watch` はビルド、`ref.read` はコールバック。
 - `riverpod_annotation` を import すれば `Ref` / `AsyncValue` 等も使える（`flutter_riverpod` の重複 import は不要）。
+
+## Commands パターン（ユーザー操作）
+
+ボタン押下など UI からの直接的なユーザー操作は、ViewModel のメソッドを直接呼ぶのではなく `core/command/command.dart` の `Command0`（引数なし）/ `Command1`（引数 1 つ）でラップする。実行中・成功・失敗の状態は `ChangeNotifier` として公開され、View は `ListenableBuilder` で監視する（[Flutter App architecture: Recommendations](https://docs.flutter.dev/app-architecture/recommendations) の Commands パターン）。
+
+```dart
+// ViewModel
+late final Command0<void> loginCommand = Command0<void>(_login);
+
+Future<Result<void>> _login() async {
+  try {
+    await ref.read(authRepositoryProvider).startLogin();
+    return const Ok<void>(null);
+  } on AppError catch (e) {
+    return Err<void>(e);
+  }
+}
+
+// View
+ListenableBuilder(
+  listenable: loginCommand,
+  builder: (context, _) => FilledButton(
+    onPressed: loginCommand.running ? null : loginCommand.execute,
+    child: loginCommand.running ? const CircularProgressIndicator() : const Text('ログイン'),
+  ),
+)
+```
+
+- 結果は `Result<T>`（`core/command/result.dart`）の `Ok` / `Err` で表現する。`Err` は必ず `AppError` を保持する。
+- ディープリンクのコールバック完了など、ユーザーの直接操作ではない非同期処理は通常の `AsyncValue` パターン（`state = await AsyncValue.guard(...)`）のままで良い。
+- `Command` は `ChangeNotifier` のため、Controller の `build()` 内で `ref.onDispose(...)` から `dispose()` を呼ぶ。
 
 ## コード生成（freezed 3 / riverpod_generator）
 
@@ -122,6 +154,22 @@ CI: `fvm flutter analyze --fatal-infos --fatal-warnings`。生成ファイルと
 - `const` を使えるところでは必ず使う / `BuildContext` を非同期ギャップをまたいで保持しない（`context.mounted` で確認）
 - `StatefulWidget` は最小限（ディープリンク購読など）/ `print` 禁止（`AppLogger` を使う）
 - デバッグコード・コメントアウト・マジックナンバーを残さない
+
+## テスト
+
+Repository / Service のテストダブルは、mocktail の `Mock` ではなく**手書きの Fake**（抽象クラスを実装し、入出力だけに関心を持つ）を優先する。Fake は実装の詳細に依存しないため、リファクタリング耐性が高い。
+
+```dart
+class _FakePlaylistRepository implements PlaylistRepository {
+  final Map<String, List<String>> albumTrackUris = {};
+  @override
+  Future<List<String>> getAlbumTrackUris(String albumId) async =>
+      albumTrackUris[albumId] ?? [];
+  // ...
+}
+```
+
+mocktail は依存に残してあるが、Fake で表現しづらいケース（呼び出し回数の厳密な検証など）に限定して使う。
 
 ## 品質チェックリスト
 
