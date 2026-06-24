@@ -1,0 +1,21 @@
+# 静的解析設定。very_good_analysis をベースに、本プロジェクト向けに調整する。
+#
+# NOTE: riverpod_lint / custom_lint は現時点で Riverpod 3.3.x に未対応のため
+#       依存から外している。対応版がリリースされ次第、custom_lint プラグインとして
+#       再有効化すること（pubspec の dev_dependencies に追加し、ここに
+#       `analyzer: plugins: - custom_lint` を記述）。
+include: package:very_good_analysis/analysis_options.yaml
+
+analyzer:
+  exclude:
+    - "**/*.g.dart"
+    - "**/*.freezed.dart"
+    - "lib/firebase_options.dart"
+    - "build/**"
+
+linter:
+  rules:
+    # 公開 API の doc コメント必須化は無効（日本語コメントで補う）。
+    public_member_api_docs: false
+    # 80 文字制限はフォーマッタに委ね、警告にはしない。
+    lines_longer_than_80_chars: false
