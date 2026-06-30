@@ -21,9 +21,13 @@ abstract class Track with _$Track {
 
   const Track._();
 
-  /// Spotify API のトラックオブジェクト（または `{track: {...}}` ラッパー）から生成する。
+  /// Spotify API のトラックオブジェクト
+  /// （または `{item: {...}}` / 旧 `{track: {...}}` ラッパー）から生成する。
   factory Track.fromJson(Map<String, dynamic> json) {
-    final track = (json['track'] as Map<String, dynamic>?) ?? json;
+    final track =
+        (json['item'] as Map<String, dynamic>?) ??
+        (json['track'] as Map<String, dynamic>?) ??
+        json;
     final album = track['album'] as Map<String, dynamic>?;
     final images = album?['images'] as List<dynamic>?;
     return Track(

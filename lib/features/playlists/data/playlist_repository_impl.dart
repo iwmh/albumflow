@@ -32,12 +32,16 @@ class PlaylistRepositoryImpl implements PlaylistRepository {
     return _guard(resource: 'トラック', () async {
       final items = await fetchAllItems(
         _dio,
-        '/playlists/$playlistId/tracks',
+        '/playlists/$playlistId/items',
         queryParameters: <String, dynamic>{'limit': 100},
       );
       return items
           // ローカル / 削除済みトラックを除外。
-          .where((item) => item['track'] != null && item['is_local'] != true)
+          .where(
+            (item) =>
+                (item['item'] ?? item['track']) != null &&
+                item['is_local'] != true,
+          )
           .map(Track.fromJson)
           .where((t) => t.id.isNotEmpty)
           .toList();
@@ -72,7 +76,7 @@ class PlaylistRepositoryImpl implements PlaylistRepository {
             ? i + batchSize
             : trackUris.length;
         await _dio.post<Map<String, dynamic>>(
-          '/playlists/$playlistId/tracks',
+          '/playlists/$playlistId/items',
           data: <String, dynamic>{'uris': trackUris.sublist(i, end)},
         );
       }
