@@ -125,36 +125,13 @@ class _DeleteButton extends ConsumerWidget {
         return IconButton(
           tooltip: 'このプレイリストから削除',
           icon: const Icon(Icons.delete_outline),
-          onPressed: () => _confirmAndDelete(context, command),
+          onPressed: () => _delete(context, command),
         );
       },
     );
   }
 
-  Future<void> _confirmAndDelete(
-    BuildContext context,
-    Command0<void> command,
-  ) async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('アルバムを削除'),
-        content: Text('「${album.title}」をこのプレイリストから削除しますか？'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('キャンセル'),
-          ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('削除'),
-          ),
-        ],
-      ),
-    );
-    if (confirmed != true) return;
-    if (!context.mounted) return;
-
+  Future<void> _delete(BuildContext context, Command0<void> command) async {
     await command.execute();
     if (!context.mounted) return;
     final result = command.result;
