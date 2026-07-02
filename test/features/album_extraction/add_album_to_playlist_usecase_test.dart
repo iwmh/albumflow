@@ -24,6 +24,12 @@ class _FakePlaylistRepository implements PlaylistRepository {
   }
 
   @override
+  Future<void> removeTracksFromPlaylist({
+    required String playlistId,
+    required List<String> trackUris,
+  }) async {}
+
+  @override
   Future<List<Playlist>> getUserPlaylists() async => <Playlist>[];
 
   @override

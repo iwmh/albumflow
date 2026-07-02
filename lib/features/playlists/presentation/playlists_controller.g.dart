@@ -37,7 +37,7 @@ final class PlaylistsControllerProvider
 }
 
 String _$playlistsControllerHash() =>
-    r'0a6b358f3b6fffa4ed455d0755c9cf1fdffe0014';
+    r'defb36b01c78be3161953cbe9cf9f50bcb78b574';
 
 /// ユーザーのプレイリスト一覧の ViewModel。
 

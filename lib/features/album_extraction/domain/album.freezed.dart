@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Album {
 
- String get id; String get title; String get type; int get totalTracks; String get releaseDate; int get totalDurationMs; List<String> get artists; String? get imageUrl;
+ String get id; String get title; String get type; int get totalTracks; String get releaseDate; int get totalDurationMs; List<String> get artists; String? get imageUrl; DateTime? get addedAt;
 /// Create a copy of Album
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $AlbumCopyWith<Album> get copyWith => _$AlbumCopyWithImpl<Album>(this as Album, 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Album&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.type, type) || other.type == type)&&(identical(other.totalTracks, totalTracks) || other.totalTracks == totalTracks)&&(identical(other.releaseDate, releaseDate) || other.releaseDate == releaseDate)&&(identical(other.totalDurationMs, totalDurationMs) || other.totalDurationMs == totalDurationMs)&&const DeepCollectionEquality().equals(other.artists, artists)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Album&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.type, type) || other.type == type)&&(identical(other.totalTracks, totalTracks) || other.totalTracks == totalTracks)&&(identical(other.releaseDate, releaseDate) || other.releaseDate == releaseDate)&&(identical(other.totalDurationMs, totalDurationMs) || other.totalDurationMs == totalDurationMs)&&const DeepCollectionEquality().equals(other.artists, artists)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.addedAt, addedAt) || other.addedAt == addedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,title,type,totalTracks,releaseDate,totalDurationMs,const DeepCollectionEquality().hash(artists),imageUrl);
+int get hashCode => Object.hash(runtimeType,id,title,type,totalTracks,releaseDate,totalDurationMs,const DeepCollectionEquality().hash(artists),imageUrl,addedAt);
 
 @override
 String toString() {
-  return 'Album(id: $id, title: $title, type: $type, totalTracks: $totalTracks, releaseDate: $releaseDate, totalDurationMs: $totalDurationMs, artists: $artists, imageUrl: $imageUrl)';
+  return 'Album(id: $id, title: $title, type: $type, totalTracks: $totalTracks, releaseDate: $releaseDate, totalDurationMs: $totalDurationMs, artists: $artists, imageUrl: $imageUrl, addedAt: $addedAt)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $AlbumCopyWith<$Res>  {
   factory $AlbumCopyWith(Album value, $Res Function(Album) _then) = _$AlbumCopyWithImpl;
 @useResult
 $Res call({
- String id, String title, String type, int totalTracks, String releaseDate, int totalDurationMs, List<String> artists, String? imageUrl
+ String id, String title, String type, int totalTracks, String releaseDate, int totalDurationMs, List<String> artists, String? imageUrl, DateTime? addedAt
 });
 
 
@@ -62,7 +62,7 @@ class _$AlbumCopyWithImpl<$Res>
 
 /// Create a copy of Album
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? type = null,Object? totalTracks = null,Object? releaseDate = null,Object? totalDurationMs = null,Object? artists = null,Object? imageUrl = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? type = null,Object? totalTracks = null,Object? releaseDate = null,Object? totalDurationMs = null,Object? artists = null,Object? imageUrl = freezed,Object? addedAt = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -72,7 +72,8 @@ as int,releaseDate: null == releaseDate ? _self.releaseDate : releaseDate // ign
 as String,totalDurationMs: null == totalDurationMs ? _self.totalDurationMs : totalDurationMs // ignore: cast_nullable_to_non_nullable
 as int,artists: null == artists ? _self.artists : artists // ignore: cast_nullable_to_non_nullable
 as List<String>,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,addedAt: freezed == addedAt ? _self.addedAt : addedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,
   ));
 }
 
@@ -157,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  String type,  int totalTracks,  String releaseDate,  int totalDurationMs,  List<String> artists,  String? imageUrl)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  String type,  int totalTracks,  String releaseDate,  int totalDurationMs,  List<String> artists,  String? imageUrl,  DateTime? addedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Album() when $default != null:
-return $default(_that.id,_that.title,_that.type,_that.totalTracks,_that.releaseDate,_that.totalDurationMs,_that.artists,_that.imageUrl);case _:
+return $default(_that.id,_that.title,_that.type,_that.totalTracks,_that.releaseDate,_that.totalDurationMs,_that.artists,_that.imageUrl,_that.addedAt);case _:
   return orElse();
 
 }
@@ -178,10 +179,10 @@ return $default(_that.id,_that.title,_that.type,_that.totalTracks,_that.releaseD
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  String type,  int totalTracks,  String releaseDate,  int totalDurationMs,  List<String> artists,  String? imageUrl)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  String type,  int totalTracks,  String releaseDate,  int totalDurationMs,  List<String> artists,  String? imageUrl,  DateTime? addedAt)  $default,) {final _that = this;
 switch (_that) {
 case _Album():
-return $default(_that.id,_that.title,_that.type,_that.totalTracks,_that.releaseDate,_that.totalDurationMs,_that.artists,_that.imageUrl);case _:
+return $default(_that.id,_that.title,_that.type,_that.totalTracks,_that.releaseDate,_that.totalDurationMs,_that.artists,_that.imageUrl,_that.addedAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +199,10 @@ return $default(_that.id,_that.title,_that.type,_that.totalTracks,_that.releaseD
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  String type,  int totalTracks,  String releaseDate,  int totalDurationMs,  List<String> artists,  String? imageUrl)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  String type,  int totalTracks,  String releaseDate,  int totalDurationMs,  List<String> artists,  String? imageUrl,  DateTime? addedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _Album() when $default != null:
-return $default(_that.id,_that.title,_that.type,_that.totalTracks,_that.releaseDate,_that.totalDurationMs,_that.artists,_that.imageUrl);case _:
+return $default(_that.id,_that.title,_that.type,_that.totalTracks,_that.releaseDate,_that.totalDurationMs,_that.artists,_that.imageUrl,_that.addedAt);case _:
   return null;
 
 }
@@ -213,7 +214,7 @@ return $default(_that.id,_that.title,_that.type,_that.totalTracks,_that.releaseD
 
 
 class _Album extends Album {
-  const _Album({required this.id, required this.title, required this.type, required this.totalTracks, required this.releaseDate, required this.totalDurationMs, required final  List<String> artists, this.imageUrl}): _artists = artists,super._();
+  const _Album({required this.id, required this.title, required this.type, required this.totalTracks, required this.releaseDate, required this.totalDurationMs, required final  List<String> artists, this.imageUrl, this.addedAt}): _artists = artists,super._();
   
 
 @override final  String id;
@@ -230,6 +231,7 @@ class _Album extends Album {
 }
 
 @override final  String? imageUrl;
+@override final  DateTime? addedAt;
 
 /// Create a copy of Album
 /// with the given fields replaced by the non-null parameter values.
@@ -241,16 +243,16 @@ _$AlbumCopyWith<_Album> get copyWith => __$AlbumCopyWithImpl<_Album>(this, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Album&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.type, type) || other.type == type)&&(identical(other.totalTracks, totalTracks) || other.totalTracks == totalTracks)&&(identical(other.releaseDate, releaseDate) || other.releaseDate == releaseDate)&&(identical(other.totalDurationMs, totalDurationMs) || other.totalDurationMs == totalDurationMs)&&const DeepCollectionEquality().equals(other._artists, _artists)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Album&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.type, type) || other.type == type)&&(identical(other.totalTracks, totalTracks) || other.totalTracks == totalTracks)&&(identical(other.releaseDate, releaseDate) || other.releaseDate == releaseDate)&&(identical(other.totalDurationMs, totalDurationMs) || other.totalDurationMs == totalDurationMs)&&const DeepCollectionEquality().equals(other._artists, _artists)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.addedAt, addedAt) || other.addedAt == addedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,title,type,totalTracks,releaseDate,totalDurationMs,const DeepCollectionEquality().hash(_artists),imageUrl);
+int get hashCode => Object.hash(runtimeType,id,title,type,totalTracks,releaseDate,totalDurationMs,const DeepCollectionEquality().hash(_artists),imageUrl,addedAt);
 
 @override
 String toString() {
-  return 'Album(id: $id, title: $title, type: $type, totalTracks: $totalTracks, releaseDate: $releaseDate, totalDurationMs: $totalDurationMs, artists: $artists, imageUrl: $imageUrl)';
+  return 'Album(id: $id, title: $title, type: $type, totalTracks: $totalTracks, releaseDate: $releaseDate, totalDurationMs: $totalDurationMs, artists: $artists, imageUrl: $imageUrl, addedAt: $addedAt)';
 }
 
 
@@ -261,7 +263,7 @@ abstract mixin class _$AlbumCopyWith<$Res> implements $AlbumCopyWith<$Res> {
   factory _$AlbumCopyWith(_Album value, $Res Function(_Album) _then) = __$AlbumCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String title, String type, int totalTracks, String releaseDate, int totalDurationMs, List<String> artists, String? imageUrl
+ String id, String title, String type, int totalTracks, String releaseDate, int totalDurationMs, List<String> artists, String? imageUrl, DateTime? addedAt
 });
 
 
@@ -278,7 +280,7 @@ class __$AlbumCopyWithImpl<$Res>
 
 /// Create a copy of Album
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? type = null,Object? totalTracks = null,Object? releaseDate = null,Object? totalDurationMs = null,Object? artists = null,Object? imageUrl = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? type = null,Object? totalTracks = null,Object? releaseDate = null,Object? totalDurationMs = null,Object? artists = null,Object? imageUrl = freezed,Object? addedAt = freezed,}) {
   return _then(_Album(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -288,7 +290,8 @@ as int,releaseDate: null == releaseDate ? _self.releaseDate : releaseDate // ign
 as String,totalDurationMs: null == totalDurationMs ? _self.totalDurationMs : totalDurationMs // ignore: cast_nullable_to_non_nullable
 as int,artists: null == artists ? _self._artists : artists // ignore: cast_nullable_to_non_nullable
 as List<String>,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,addedAt: freezed == addedAt ? _self.addedAt : addedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,
   ));
 }
 

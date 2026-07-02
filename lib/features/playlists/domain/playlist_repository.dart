@@ -17,4 +17,10 @@ abstract interface class PlaylistRepository {
     required String playlistId,
     required List<String> trackUris,
   });
+
+  /// プレイリストからトラック群を削除（100 件ずつ分割）。
+  Future<void> removeTracksFromPlaylist({
+    required String playlistId,
+    required List<String> trackUris,
+  });
 }

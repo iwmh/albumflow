@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Track {
 
- String get id; String get name; List<String> get artists; String get albumId; String get albumName; String get albumType; int get albumTotalTracks; String get albumReleaseDate; int get durationMs; String get uri; String? get albumImageUrl;
+ String get id; String get name; List<String> get artists; String get albumId; String get albumName; String get albumType; int get albumTotalTracks; String get albumReleaseDate; int get durationMs; String get uri; String? get albumImageUrl; DateTime? get addedAt;
 /// Create a copy of Track
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $TrackCopyWith<Track> get copyWith => _$TrackCopyWithImpl<Track>(this as Track, 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Track&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other.artists, artists)&&(identical(other.albumId, albumId) || other.albumId == albumId)&&(identical(other.albumName, albumName) || other.albumName == albumName)&&(identical(other.albumType, albumType) || other.albumType == albumType)&&(identical(other.albumTotalTracks, albumTotalTracks) || other.albumTotalTracks == albumTotalTracks)&&(identical(other.albumReleaseDate, albumReleaseDate) || other.albumReleaseDate == albumReleaseDate)&&(identical(other.durationMs, durationMs) || other.durationMs == durationMs)&&(identical(other.uri, uri) || other.uri == uri)&&(identical(other.albumImageUrl, albumImageUrl) || other.albumImageUrl == albumImageUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Track&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other.artists, artists)&&(identical(other.albumId, albumId) || other.albumId == albumId)&&(identical(other.albumName, albumName) || other.albumName == albumName)&&(identical(other.albumType, albumType) || other.albumType == albumType)&&(identical(other.albumTotalTracks, albumTotalTracks) || other.albumTotalTracks == albumTotalTracks)&&(identical(other.albumReleaseDate, albumReleaseDate) || other.albumReleaseDate == albumReleaseDate)&&(identical(other.durationMs, durationMs) || other.durationMs == durationMs)&&(identical(other.uri, uri) || other.uri == uri)&&(identical(other.albumImageUrl, albumImageUrl) || other.albumImageUrl == albumImageUrl)&&(identical(other.addedAt, addedAt) || other.addedAt == addedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,name,const DeepCollectionEquality().hash(artists),albumId,albumName,albumType,albumTotalTracks,albumReleaseDate,durationMs,uri,albumImageUrl);
+int get hashCode => Object.hash(runtimeType,id,name,const DeepCollectionEquality().hash(artists),albumId,albumName,albumType,albumTotalTracks,albumReleaseDate,durationMs,uri,albumImageUrl,addedAt);
 
 @override
 String toString() {
-  return 'Track(id: $id, name: $name, artists: $artists, albumId: $albumId, albumName: $albumName, albumType: $albumType, albumTotalTracks: $albumTotalTracks, albumReleaseDate: $albumReleaseDate, durationMs: $durationMs, uri: $uri, albumImageUrl: $albumImageUrl)';
+  return 'Track(id: $id, name: $name, artists: $artists, albumId: $albumId, albumName: $albumName, albumType: $albumType, albumTotalTracks: $albumTotalTracks, albumReleaseDate: $albumReleaseDate, durationMs: $durationMs, uri: $uri, albumImageUrl: $albumImageUrl, addedAt: $addedAt)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $TrackCopyWith<$Res>  {
   factory $TrackCopyWith(Track value, $Res Function(Track) _then) = _$TrackCopyWithImpl;
 @useResult
 $Res call({
- String id, String name, List<String> artists, String albumId, String albumName, String albumType, int albumTotalTracks, String albumReleaseDate, int durationMs, String uri, String? albumImageUrl
+ String id, String name, List<String> artists, String albumId, String albumName, String albumType, int albumTotalTracks, String albumReleaseDate, int durationMs, String uri, String? albumImageUrl, DateTime? addedAt
 });
 
 
@@ -62,7 +62,7 @@ class _$TrackCopyWithImpl<$Res>
 
 /// Create a copy of Track
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? artists = null,Object? albumId = null,Object? albumName = null,Object? albumType = null,Object? albumTotalTracks = null,Object? albumReleaseDate = null,Object? durationMs = null,Object? uri = null,Object? albumImageUrl = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? name = null,Object? artists = null,Object? albumId = null,Object? albumName = null,Object? albumType = null,Object? albumTotalTracks = null,Object? albumReleaseDate = null,Object? durationMs = null,Object? uri = null,Object? albumImageUrl = freezed,Object? addedAt = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -75,7 +75,8 @@ as int,albumReleaseDate: null == albumReleaseDate ? _self.albumReleaseDate : alb
 as String,durationMs: null == durationMs ? _self.durationMs : durationMs // ignore: cast_nullable_to_non_nullable
 as int,uri: null == uri ? _self.uri : uri // ignore: cast_nullable_to_non_nullable
 as String,albumImageUrl: freezed == albumImageUrl ? _self.albumImageUrl : albumImageUrl // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,addedAt: freezed == addedAt ? _self.addedAt : addedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,
   ));
 }
 
@@ -160,10 +161,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  List<String> artists,  String albumId,  String albumName,  String albumType,  int albumTotalTracks,  String albumReleaseDate,  int durationMs,  String uri,  String? albumImageUrl)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String name,  List<String> artists,  String albumId,  String albumName,  String albumType,  int albumTotalTracks,  String albumReleaseDate,  int durationMs,  String uri,  String? albumImageUrl,  DateTime? addedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Track() when $default != null:
-return $default(_that.id,_that.name,_that.artists,_that.albumId,_that.albumName,_that.albumType,_that.albumTotalTracks,_that.albumReleaseDate,_that.durationMs,_that.uri,_that.albumImageUrl);case _:
+return $default(_that.id,_that.name,_that.artists,_that.albumId,_that.albumName,_that.albumType,_that.albumTotalTracks,_that.albumReleaseDate,_that.durationMs,_that.uri,_that.albumImageUrl,_that.addedAt);case _:
   return orElse();
 
 }
@@ -181,10 +182,10 @@ return $default(_that.id,_that.name,_that.artists,_that.albumId,_that.albumName,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  List<String> artists,  String albumId,  String albumName,  String albumType,  int albumTotalTracks,  String albumReleaseDate,  int durationMs,  String uri,  String? albumImageUrl)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String name,  List<String> artists,  String albumId,  String albumName,  String albumType,  int albumTotalTracks,  String albumReleaseDate,  int durationMs,  String uri,  String? albumImageUrl,  DateTime? addedAt)  $default,) {final _that = this;
 switch (_that) {
 case _Track():
-return $default(_that.id,_that.name,_that.artists,_that.albumId,_that.albumName,_that.albumType,_that.albumTotalTracks,_that.albumReleaseDate,_that.durationMs,_that.uri,_that.albumImageUrl);case _:
+return $default(_that.id,_that.name,_that.artists,_that.albumId,_that.albumName,_that.albumType,_that.albumTotalTracks,_that.albumReleaseDate,_that.durationMs,_that.uri,_that.albumImageUrl,_that.addedAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -201,10 +202,10 @@ return $default(_that.id,_that.name,_that.artists,_that.albumId,_that.albumName,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  List<String> artists,  String albumId,  String albumName,  String albumType,  int albumTotalTracks,  String albumReleaseDate,  int durationMs,  String uri,  String? albumImageUrl)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String name,  List<String> artists,  String albumId,  String albumName,  String albumType,  int albumTotalTracks,  String albumReleaseDate,  int durationMs,  String uri,  String? albumImageUrl,  DateTime? addedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _Track() when $default != null:
-return $default(_that.id,_that.name,_that.artists,_that.albumId,_that.albumName,_that.albumType,_that.albumTotalTracks,_that.albumReleaseDate,_that.durationMs,_that.uri,_that.albumImageUrl);case _:
+return $default(_that.id,_that.name,_that.artists,_that.albumId,_that.albumName,_that.albumType,_that.albumTotalTracks,_that.albumReleaseDate,_that.durationMs,_that.uri,_that.albumImageUrl,_that.addedAt);case _:
   return null;
 
 }
@@ -216,7 +217,7 @@ return $default(_that.id,_that.name,_that.artists,_that.albumId,_that.albumName,
 
 
 class _Track extends Track {
-  const _Track({required this.id, required this.name, required final  List<String> artists, required this.albumId, required this.albumName, required this.albumType, required this.albumTotalTracks, required this.albumReleaseDate, required this.durationMs, required this.uri, this.albumImageUrl}): _artists = artists,super._();
+  const _Track({required this.id, required this.name, required final  List<String> artists, required this.albumId, required this.albumName, required this.albumType, required this.albumTotalTracks, required this.albumReleaseDate, required this.durationMs, required this.uri, this.albumImageUrl, this.addedAt}): _artists = artists,super._();
   
 
 @override final  String id;
@@ -236,6 +237,7 @@ class _Track extends Track {
 @override final  int durationMs;
 @override final  String uri;
 @override final  String? albumImageUrl;
+@override final  DateTime? addedAt;
 
 /// Create a copy of Track
 /// with the given fields replaced by the non-null parameter values.
@@ -247,16 +249,16 @@ _$TrackCopyWith<_Track> get copyWith => __$TrackCopyWithImpl<_Track>(this, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Track&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other._artists, _artists)&&(identical(other.albumId, albumId) || other.albumId == albumId)&&(identical(other.albumName, albumName) || other.albumName == albumName)&&(identical(other.albumType, albumType) || other.albumType == albumType)&&(identical(other.albumTotalTracks, albumTotalTracks) || other.albumTotalTracks == albumTotalTracks)&&(identical(other.albumReleaseDate, albumReleaseDate) || other.albumReleaseDate == albumReleaseDate)&&(identical(other.durationMs, durationMs) || other.durationMs == durationMs)&&(identical(other.uri, uri) || other.uri == uri)&&(identical(other.albumImageUrl, albumImageUrl) || other.albumImageUrl == albumImageUrl));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Track&&(identical(other.id, id) || other.id == id)&&(identical(other.name, name) || other.name == name)&&const DeepCollectionEquality().equals(other._artists, _artists)&&(identical(other.albumId, albumId) || other.albumId == albumId)&&(identical(other.albumName, albumName) || other.albumName == albumName)&&(identical(other.albumType, albumType) || other.albumType == albumType)&&(identical(other.albumTotalTracks, albumTotalTracks) || other.albumTotalTracks == albumTotalTracks)&&(identical(other.albumReleaseDate, albumReleaseDate) || other.albumReleaseDate == albumReleaseDate)&&(identical(other.durationMs, durationMs) || other.durationMs == durationMs)&&(identical(other.uri, uri) || other.uri == uri)&&(identical(other.albumImageUrl, albumImageUrl) || other.albumImageUrl == albumImageUrl)&&(identical(other.addedAt, addedAt) || other.addedAt == addedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,name,const DeepCollectionEquality().hash(_artists),albumId,albumName,albumType,albumTotalTracks,albumReleaseDate,durationMs,uri,albumImageUrl);
+int get hashCode => Object.hash(runtimeType,id,name,const DeepCollectionEquality().hash(_artists),albumId,albumName,albumType,albumTotalTracks,albumReleaseDate,durationMs,uri,albumImageUrl,addedAt);
 
 @override
 String toString() {
-  return 'Track(id: $id, name: $name, artists: $artists, albumId: $albumId, albumName: $albumName, albumType: $albumType, albumTotalTracks: $albumTotalTracks, albumReleaseDate: $albumReleaseDate, durationMs: $durationMs, uri: $uri, albumImageUrl: $albumImageUrl)';
+  return 'Track(id: $id, name: $name, artists: $artists, albumId: $albumId, albumName: $albumName, albumType: $albumType, albumTotalTracks: $albumTotalTracks, albumReleaseDate: $albumReleaseDate, durationMs: $durationMs, uri: $uri, albumImageUrl: $albumImageUrl, addedAt: $addedAt)';
 }
 
 
@@ -267,7 +269,7 @@ abstract mixin class _$TrackCopyWith<$Res> implements $TrackCopyWith<$Res> {
   factory _$TrackCopyWith(_Track value, $Res Function(_Track) _then) = __$TrackCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String name, List<String> artists, String albumId, String albumName, String albumType, int albumTotalTracks, String albumReleaseDate, int durationMs, String uri, String? albumImageUrl
+ String id, String name, List<String> artists, String albumId, String albumName, String albumType, int albumTotalTracks, String albumReleaseDate, int durationMs, String uri, String? albumImageUrl, DateTime? addedAt
 });
 
 
@@ -284,7 +286,7 @@ class __$TrackCopyWithImpl<$Res>
 
 /// Create a copy of Track
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? artists = null,Object? albumId = null,Object? albumName = null,Object? albumType = null,Object? albumTotalTracks = null,Object? albumReleaseDate = null,Object? durationMs = null,Object? uri = null,Object? albumImageUrl = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? name = null,Object? artists = null,Object? albumId = null,Object? albumName = null,Object? albumType = null,Object? albumTotalTracks = null,Object? albumReleaseDate = null,Object? durationMs = null,Object? uri = null,Object? albumImageUrl = freezed,Object? addedAt = freezed,}) {
   return _then(_Track(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -297,7 +299,8 @@ as int,albumReleaseDate: null == albumReleaseDate ? _self.albumReleaseDate : alb
 as String,durationMs: null == durationMs ? _self.durationMs : durationMs // ignore: cast_nullable_to_non_nullable
 as int,uri: null == uri ? _self.uri : uri // ignore: cast_nullable_to_non_nullable
 as String,albumImageUrl: freezed == albumImageUrl ? _self.albumImageUrl : albumImageUrl // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,addedAt: freezed == addedAt ? _self.addedAt : addedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,
   ));
 }
 

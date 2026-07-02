@@ -10,6 +10,7 @@ Track _track({
   int durationMs = 200000,
   String releaseDate = '2020-01-01',
   List<String> artists = const <String>['Artist A'],
+  DateTime? addedAt,
 }) {
   return Track(
     id: 'track_${albumId}_$durationMs',
@@ -22,6 +23,7 @@ Track _track({
     albumReleaseDate: releaseDate,
     durationMs: durationMs,
     uri: 'spotify:track:$albumId',
+    addedAt: addedAt,
   );
 }
 
@@ -92,15 +94,32 @@ void main() {
       expect(albums.map((a) => a.id), <String>['valid']);
     });
 
-    test('リリース日の新しい順に並ぶ', () {
+    test('プレイリストへの追加順（古い順）に並ぶ', () {
       final tracks = <Track>[
-        _track(albumId: 'old', releaseDate: '2010-01-01'),
-        _track(albumId: 'new', releaseDate: '2023-01-01'),
+        _track(
+          albumId: 'addedSecond',
+          addedAt: DateTime.utc(2023),
+        ),
+        _track(
+          albumId: 'addedFirst',
+          addedAt: DateTime.utc(2020),
+        ),
       ];
 
       final albums = useCase(tracks);
 
-      expect(albums.map((a) => a.id), <String>['new', 'old']);
+      expect(albums.map((a) => a.id), <String>['addedFirst', 'addedSecond']);
+    });
+
+    test('追加日時が不明なアルバムは末尾に並ぶ', () {
+      final tracks = <Track>[
+        _track(albumId: 'unknown'),
+        _track(albumId: 'known', addedAt: DateTime.utc(2020)),
+      ];
+
+      final albums = useCase(tracks);
+
+      expect(albums.map((a) => a.id), <String>['known', 'unknown']);
     });
   });
 }

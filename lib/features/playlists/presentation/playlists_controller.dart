@@ -12,8 +12,9 @@ class PlaylistsController extends _$PlaylistsController {
     return ref.watch(playlistRepositoryProvider).getUserPlaylists();
   }
 
+  /// 引き下げ更新用。取得中も直前の一覧を表示したままにするため、
+  /// ローディング状態への切り替えは行わない。
   Future<void> refresh() async {
-    state = const AsyncValue<List<Playlist>>.loading();
     state = await AsyncValue.guard(
       () => ref.read(playlistRepositoryProvider).getUserPlaylists(),
     );

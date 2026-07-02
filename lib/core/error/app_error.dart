@@ -17,6 +17,9 @@ sealed class AppError with _$AppError implements Exception {
   const factory AppError.rateLimited({required int retryAfterSeconds}) =
       RateLimitedError;
 
+  /// アクセス権限がない（HTTP 403）。他人のプレイリストの編集など。
+  const factory AppError.forbidden({String? reason}) = ForbiddenError;
+
   /// サーバーエラー（HTTP 5xx）。
   const factory AppError.server({required int statusCode}) = ServerError;
 
@@ -34,6 +37,10 @@ extension AppErrorMessage on AppError {
     NetworkError(:final message) => 'ネットワークエラーが発生しました（$message）。',
     RateLimitedError(:final retryAfterSeconds) =>
       'リクエストが多すぎます。$retryAfterSeconds 秒後に再試行してください。',
+    ForbiddenError(:final reason) =>
+      '権限がないため操作できませんでした'
+          '${reason != null ? '（$reason）' : ''}。'
+          '自分が作成した、または共同編集可能なプレイリストのみ操作できます。',
     ServerError(:final statusCode) => 'サーバーエラー（$statusCode）が発生しました。',
     NotFoundError(:final resource) => '$resource が見つかりませんでした。',
     UnknownError() => '予期しないエラーが発生しました。',

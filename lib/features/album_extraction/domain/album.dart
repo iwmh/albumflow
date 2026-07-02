@@ -15,6 +15,7 @@ abstract class Album with _$Album {
     required int totalDurationMs,
     required List<String> artists,
     String? imageUrl,
+    DateTime? addedAt,
   }) = _Album;
 
   const Album._();
@@ -25,6 +26,16 @@ abstract class Album with _$Album {
     final first = tracks.first;
     final totalDuration = tracks.fold<int>(0, (sum, t) => sum + t.durationMs);
     final artists = <String>{for (final t in tracks) ...t.artists}.toList();
+    // アルバムの追加日時は、そのアルバムの中で最も早くプレイリストに
+    // 追加されたトラックの日時とする。
+    DateTime? addedAt;
+    for (final t in tracks) {
+      final trackAddedAt = t.addedAt;
+      if (trackAddedAt == null) continue;
+      if (addedAt == null || trackAddedAt.isBefore(addedAt)) {
+        addedAt = trackAddedAt;
+      }
+    }
     return Album(
       id: first.albumId,
       title: first.albumName,
@@ -34,6 +45,7 @@ abstract class Album with _$Album {
       releaseDate: first.albumReleaseDate,
       totalDurationMs: totalDuration,
       artists: artists,
+      addedAt: addedAt,
     );
   }
 

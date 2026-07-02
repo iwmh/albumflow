@@ -55,13 +55,14 @@ extension AppErrorPatterns on AppError {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AuthExpiredError value)?  authExpired,TResult Function( NetworkError value)?  network,TResult Function( RateLimitedError value)?  rateLimited,TResult Function( ServerError value)?  server,TResult Function( NotFoundError value)?  notFound,TResult Function( UnknownError value)?  unknown,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( AuthExpiredError value)?  authExpired,TResult Function( NetworkError value)?  network,TResult Function( RateLimitedError value)?  rateLimited,TResult Function( ForbiddenError value)?  forbidden,TResult Function( ServerError value)?  server,TResult Function( NotFoundError value)?  notFound,TResult Function( UnknownError value)?  unknown,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case AuthExpiredError() when authExpired != null:
 return authExpired(_that);case NetworkError() when network != null:
 return network(_that);case RateLimitedError() when rateLimited != null:
-return rateLimited(_that);case ServerError() when server != null:
+return rateLimited(_that);case ForbiddenError() when forbidden != null:
+return forbidden(_that);case ServerError() when server != null:
 return server(_that);case NotFoundError() when notFound != null:
 return notFound(_that);case UnknownError() when unknown != null:
 return unknown(_that);case _:
@@ -82,13 +83,14 @@ return unknown(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AuthExpiredError value)  authExpired,required TResult Function( NetworkError value)  network,required TResult Function( RateLimitedError value)  rateLimited,required TResult Function( ServerError value)  server,required TResult Function( NotFoundError value)  notFound,required TResult Function( UnknownError value)  unknown,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( AuthExpiredError value)  authExpired,required TResult Function( NetworkError value)  network,required TResult Function( RateLimitedError value)  rateLimited,required TResult Function( ForbiddenError value)  forbidden,required TResult Function( ServerError value)  server,required TResult Function( NotFoundError value)  notFound,required TResult Function( UnknownError value)  unknown,}){
 final _that = this;
 switch (_that) {
 case AuthExpiredError():
 return authExpired(_that);case NetworkError():
 return network(_that);case RateLimitedError():
-return rateLimited(_that);case ServerError():
+return rateLimited(_that);case ForbiddenError():
+return forbidden(_that);case ServerError():
 return server(_that);case NotFoundError():
 return notFound(_that);case UnknownError():
 return unknown(_that);}
@@ -105,13 +107,14 @@ return unknown(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AuthExpiredError value)?  authExpired,TResult? Function( NetworkError value)?  network,TResult? Function( RateLimitedError value)?  rateLimited,TResult? Function( ServerError value)?  server,TResult? Function( NotFoundError value)?  notFound,TResult? Function( UnknownError value)?  unknown,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( AuthExpiredError value)?  authExpired,TResult? Function( NetworkError value)?  network,TResult? Function( RateLimitedError value)?  rateLimited,TResult? Function( ForbiddenError value)?  forbidden,TResult? Function( ServerError value)?  server,TResult? Function( NotFoundError value)?  notFound,TResult? Function( UnknownError value)?  unknown,}){
 final _that = this;
 switch (_that) {
 case AuthExpiredError() when authExpired != null:
 return authExpired(_that);case NetworkError() when network != null:
 return network(_that);case RateLimitedError() when rateLimited != null:
-return rateLimited(_that);case ServerError() when server != null:
+return rateLimited(_that);case ForbiddenError() when forbidden != null:
+return forbidden(_that);case ServerError() when server != null:
 return server(_that);case NotFoundError() when notFound != null:
 return notFound(_that);case UnknownError() when unknown != null:
 return unknown(_that);case _:
@@ -131,12 +134,13 @@ return unknown(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  authExpired,TResult Function( String message)?  network,TResult Function( int retryAfterSeconds)?  rateLimited,TResult Function( int statusCode)?  server,TResult Function( String resource)?  notFound,TResult Function( Object? cause)?  unknown,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  authExpired,TResult Function( String message)?  network,TResult Function( int retryAfterSeconds)?  rateLimited,TResult Function( String? reason)?  forbidden,TResult Function( int statusCode)?  server,TResult Function( String resource)?  notFound,TResult Function( Object? cause)?  unknown,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case AuthExpiredError() when authExpired != null:
 return authExpired();case NetworkError() when network != null:
 return network(_that.message);case RateLimitedError() when rateLimited != null:
-return rateLimited(_that.retryAfterSeconds);case ServerError() when server != null:
+return rateLimited(_that.retryAfterSeconds);case ForbiddenError() when forbidden != null:
+return forbidden(_that.reason);case ServerError() when server != null:
 return server(_that.statusCode);case NotFoundError() when notFound != null:
 return notFound(_that.resource);case UnknownError() when unknown != null:
 return unknown(_that.cause);case _:
@@ -157,12 +161,13 @@ return unknown(_that.cause);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  authExpired,required TResult Function( String message)  network,required TResult Function( int retryAfterSeconds)  rateLimited,required TResult Function( int statusCode)  server,required TResult Function( String resource)  notFound,required TResult Function( Object? cause)  unknown,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  authExpired,required TResult Function( String message)  network,required TResult Function( int retryAfterSeconds)  rateLimited,required TResult Function( String? reason)  forbidden,required TResult Function( int statusCode)  server,required TResult Function( String resource)  notFound,required TResult Function( Object? cause)  unknown,}) {final _that = this;
 switch (_that) {
 case AuthExpiredError():
 return authExpired();case NetworkError():
 return network(_that.message);case RateLimitedError():
-return rateLimited(_that.retryAfterSeconds);case ServerError():
+return rateLimited(_that.retryAfterSeconds);case ForbiddenError():
+return forbidden(_that.reason);case ServerError():
 return server(_that.statusCode);case NotFoundError():
 return notFound(_that.resource);case UnknownError():
 return unknown(_that.cause);}
@@ -179,12 +184,13 @@ return unknown(_that.cause);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  authExpired,TResult? Function( String message)?  network,TResult? Function( int retryAfterSeconds)?  rateLimited,TResult? Function( int statusCode)?  server,TResult? Function( String resource)?  notFound,TResult? Function( Object? cause)?  unknown,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  authExpired,TResult? Function( String message)?  network,TResult? Function( int retryAfterSeconds)?  rateLimited,TResult? Function( String? reason)?  forbidden,TResult? Function( int statusCode)?  server,TResult? Function( String resource)?  notFound,TResult? Function( Object? cause)?  unknown,}) {final _that = this;
 switch (_that) {
 case AuthExpiredError() when authExpired != null:
 return authExpired();case NetworkError() when network != null:
 return network(_that.message);case RateLimitedError() when rateLimited != null:
-return rateLimited(_that.retryAfterSeconds);case ServerError() when server != null:
+return rateLimited(_that.retryAfterSeconds);case ForbiddenError() when forbidden != null:
+return forbidden(_that.reason);case ServerError() when server != null:
 return server(_that.statusCode);case NotFoundError() when notFound != null:
 return notFound(_that.resource);case UnknownError() when unknown != null:
 return unknown(_that.cause);case _:
@@ -353,6 +359,72 @@ class _$RateLimitedErrorCopyWithImpl<$Res>
   return _then(RateLimitedError(
 retryAfterSeconds: null == retryAfterSeconds ? _self.retryAfterSeconds : retryAfterSeconds // ignore: cast_nullable_to_non_nullable
 as int,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class ForbiddenError implements AppError {
+  const ForbiddenError({this.reason});
+  
+
+ final  String? reason;
+
+/// Create a copy of AppError
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$ForbiddenErrorCopyWith<ForbiddenError> get copyWith => _$ForbiddenErrorCopyWithImpl<ForbiddenError>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ForbiddenError&&(identical(other.reason, reason) || other.reason == reason));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,reason);
+
+@override
+String toString() {
+  return 'AppError.forbidden(reason: $reason)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $ForbiddenErrorCopyWith<$Res> implements $AppErrorCopyWith<$Res> {
+  factory $ForbiddenErrorCopyWith(ForbiddenError value, $Res Function(ForbiddenError) _then) = _$ForbiddenErrorCopyWithImpl;
+@useResult
+$Res call({
+ String? reason
+});
+
+
+
+
+}
+/// @nodoc
+class _$ForbiddenErrorCopyWithImpl<$Res>
+    implements $ForbiddenErrorCopyWith<$Res> {
+  _$ForbiddenErrorCopyWithImpl(this._self, this._then);
+
+  final ForbiddenError _self;
+  final $Res Function(ForbiddenError) _then;
+
+/// Create a copy of AppError
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? reason = freezed,}) {
+  return _then(ForbiddenError(
+reason: freezed == reason ? _self.reason : reason // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

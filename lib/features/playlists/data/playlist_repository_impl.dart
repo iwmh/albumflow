@@ -83,6 +83,33 @@ class PlaylistRepositoryImpl implements PlaylistRepository {
     });
   }
 
+  @override
+  Future<void> removeTracksFromPlaylist({
+    required String playlistId,
+    required List<String> trackUris,
+  }) {
+    if (trackUris.isEmpty) return Future<void>.value();
+    return _guard(resource: 'プレイリスト', () async {
+      const batchSize = SpotifyConstants.addTracksBatchSize;
+      for (var i = 0; i < trackUris.length; i += batchSize) {
+        final end = (i + batchSize < trackUris.length)
+            ? i + batchSize
+            : trackUris.length;
+        // 2026年2月の Web API 移行で削除エンドポイントも tracks は廃止され、
+        // items（ボディのキーも items）に統合された。
+        await _dio.delete<Map<String, dynamic>>(
+          '/playlists/$playlistId/items',
+          data: <String, dynamic>{
+            'items': trackUris
+                .sublist(i, end)
+                .map((uri) => <String, String>{'uri': uri})
+                .toList(),
+          },
+        );
+      }
+    });
+  }
+
   Future<T> _guard<T>(
     Future<T> Function() body, {
     required String resource,

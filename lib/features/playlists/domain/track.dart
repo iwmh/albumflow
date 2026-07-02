@@ -17,6 +17,7 @@ abstract class Track with _$Track {
     required int durationMs,
     required String uri,
     String? albumImageUrl,
+    DateTime? addedAt,
   }) = _Track;
 
   const Track._();
@@ -48,6 +49,8 @@ abstract class Track with _$Track {
       albumReleaseDate: (album?['release_date'] as String?) ?? '',
       durationMs: (track['duration_ms'] as num?)?.toInt() ?? 0,
       uri: (track['uri'] as String?) ?? '',
+      // プレイリスト内アイテムのラッパーが持つ「追加日時」（トラック単体の JSON には存在しない）。
+      addedAt: DateTime.tryParse((json['added_at'] as String?) ?? ''),
     );
   }
 
