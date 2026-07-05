@@ -4,6 +4,7 @@ import 'package:albumflow/core/widgets/error_view.dart';
 import 'package:albumflow/core/widgets/loading_view.dart';
 import 'package:albumflow/features/playlists/presentation/playlists_controller.dart';
 import 'package:albumflow/features/target_playlists/presentation/target_settings_controller.dart';
+import 'package:albumflow/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -17,9 +18,10 @@ class TargetSettingsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final playlists = ref.watch(playlistsControllerProvider);
     final targets = ref.watch(targetSettingsControllerProvider);
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('登録先プレイリストの設定')),
+      appBar: AppBar(title: Text(l10n.targetSettingsScreenTitle)),
       body: playlists.when(
         loading: () => const LoadingView(),
         error: (error, _) => ErrorView(
@@ -30,11 +32,9 @@ class TargetSettingsScreen extends ConsumerWidget {
           final selectedIds = targets.value ?? const <String>{};
           return Column(
             children: <Widget>[
-              const Padding(
-                padding: EdgeInsets.all(16),
-                child: Text(
-                  'チェックしたプレイリストが、アルバムのワンタップ登録先になります。',
-                ),
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Text(l10n.targetSettingsDescription),
               ),
               Expanded(
                 child: ListView.builder(
@@ -48,7 +48,7 @@ class TargetSettingsScreen extends ConsumerWidget {
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      subtitle: Text('${playlist.totalTracks} 曲'),
+                      subtitle: Text(l10n.trackCount(playlist.totalTracks)),
                       onChanged: (_) => _toggle(context, ref, playlist.id),
                     );
                   },
@@ -75,8 +75,11 @@ Future<void> _toggle(
   if (!context.mounted) return;
   final result = toggleCommand.result;
   if (result is Err<void>) {
+    final l10n = AppLocalizations.of(context);
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text(result.error.displayMessage)));
+      ..showSnackBar(
+        SnackBar(content: Text(result.error.displayMessage(l10n))),
+      );
   }
 }

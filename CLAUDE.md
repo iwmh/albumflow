@@ -9,6 +9,7 @@ Spotify のプレイリストから**アルバム・EP だけを抽出**し、**
 ```bash
 fvm dart run build_runner build  # コード生成（生成ファイルはコミットする）
 fvm dart run build_runner watch  # ウォッチモード
+fvm flutter gen-l10n              # 多言語対応の文字列生成（lib/l10n/*.arb 編集後に実行、生成ファイルはコミットする）
 fvm dart format lib test         # フォーマット（build/ は対象外）
 fvm flutter analyze              # 静的解析（警告 0 を維持）
 fvm flutter test                 # テスト
@@ -123,11 +124,25 @@ abstract class Playlist with _$Playlist {
 @freezed
 sealed class AppError with _$AppError implements Exception {
   const factory AppError.authExpired() = AuthExpiredError;
-  const factory AppError.network({required String message}) = NetworkError;
+  const factory AppError.network({String? message}) = NetworkError;
 }
 ```
 
 **生成ファイル（`.g.dart` / `.freezed.dart`）はコミットする**（CI で build_runner 不要）。Spotify の深いネスト JSON は `fromJson` を手書きで解釈し、json_serializable のサブモデル乱立を避ける。
+
+## 多言語対応（l10n）
+
+UI に表示する文字列は `lib/l10n/app_ja.arb`（テンプレート）と `lib/l10n/app_en.arb`（翻訳）に定義し、`AppLocalizations.of(context)` 経由で参照する。**View に日本語・英語の文字列をハードコードしない。**
+
+```dart
+final l10n = AppLocalizations.of(context);
+Text(l10n.playlistsScreenTitle);
+Text(l10n.trackCount(playlist.totalTracks)); // ICU plural（count プレースホルダ）
+```
+
+- ARB を編集したら `fvm flutter gen-l10n` を実行し、`lib/l10n/generated/` の生成ファイルをコミットする。
+- `AppError.displayMessage` はドメイン層に `BuildContext` を持ち込まないよう `AppLocalizations` を引数で受け取る（`error.displayMessage(l10n)`）。`AppError.notFound` の `resource` は文字列ではなく `ApiResource`（enum）で表現し、表示名は `ApiResourceLabel.label(l10n)` で解決する。
+- Spotify API のレスポンス欠損時のフォールバック値（例: `Track.fromJson` の `'Unknown Track'`）はドメイン層のプレースホルダーであり、l10n の対象外。
 
 ## エラーハンドリング
 
@@ -178,6 +193,7 @@ mocktail は依存に残してあるが、Fake で表現しづらいケース（
 - [ ] すべての AsyncValue 状態を処理（data/loading/error）
 - [ ] `fvm dart format lib test` 適用済み
 - [ ] `fvm dart run build_runner build` 実行済み（生成ファイルが最新）
+- [ ] UI 文字列は `lib/l10n/*.arb` に定義し、`fvm flutter gen-l10n` 実行済み（日本語ハードコードなし）
 - [ ] アクセシビリティ（セマンティクス、48dp タッチターゲット、コントラスト 4.5:1 以上）
 
 ## 利用可能なスキル（`.claude/skills/`）

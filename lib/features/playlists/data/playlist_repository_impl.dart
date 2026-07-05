@@ -1,4 +1,5 @@
 import 'package:albumflow/core/config/spotify_constants.dart';
+import 'package:albumflow/core/error/app_error.dart';
 import 'package:albumflow/core/network/dio_error_mapper.dart';
 import 'package:albumflow/core/network/spotify_paginator.dart';
 import 'package:albumflow/features/playlists/domain/playlist.dart';
@@ -14,7 +15,7 @@ class PlaylistRepositoryImpl implements PlaylistRepository {
 
   @override
   Future<List<Playlist>> getUserPlaylists() {
-    return _guard(resource: 'プレイリスト', () async {
+    return _guard(resource: ApiResource.playlist, () async {
       final items = await fetchAllItems(
         _dio,
         '/me/playlists',
@@ -29,7 +30,7 @@ class PlaylistRepositoryImpl implements PlaylistRepository {
 
   @override
   Future<List<Track>> getPlaylistTracks(String playlistId) {
-    return _guard(resource: 'トラック', () async {
+    return _guard(resource: ApiResource.track, () async {
       final items = await fetchAllItems(
         _dio,
         '/playlists/$playlistId/items',
@@ -50,7 +51,7 @@ class PlaylistRepositoryImpl implements PlaylistRepository {
 
   @override
   Future<List<String>> getAlbumTrackUris(String albumId) {
-    return _guard(resource: 'アルバム', () async {
+    return _guard(resource: ApiResource.album, () async {
       final items = await fetchAllItems(
         _dio,
         '/albums/$albumId/tracks',
@@ -69,7 +70,7 @@ class PlaylistRepositoryImpl implements PlaylistRepository {
     required List<String> trackUris,
   }) {
     if (trackUris.isEmpty) return Future<void>.value();
-    return _guard(resource: 'プレイリスト', () async {
+    return _guard(resource: ApiResource.playlist, () async {
       const batchSize = SpotifyConstants.addTracksBatchSize;
       for (var i = 0; i < trackUris.length; i += batchSize) {
         final end = (i + batchSize < trackUris.length)
@@ -89,7 +90,7 @@ class PlaylistRepositoryImpl implements PlaylistRepository {
     required List<String> trackUris,
   }) {
     if (trackUris.isEmpty) return Future<void>.value();
-    return _guard(resource: 'プレイリスト', () async {
+    return _guard(resource: ApiResource.playlist, () async {
       const batchSize = SpotifyConstants.addTracksBatchSize;
       for (var i = 0; i < trackUris.length; i += batchSize) {
         final end = (i + batchSize < trackUris.length)
@@ -112,7 +113,7 @@ class PlaylistRepositoryImpl implements PlaylistRepository {
 
   Future<T> _guard<T>(
     Future<T> Function() body, {
-    required String resource,
+    required ApiResource resource,
   }) async {
     try {
       return await body();

@@ -6,6 +6,7 @@ import 'package:albumflow/features/album_extraction/domain/album.dart';
 import 'package:albumflow/features/album_extraction/presentation/quick_add_controller.dart';
 import 'package:albumflow/features/album_extraction/presentation/remove_album_controller.dart';
 import 'package:albumflow/features/playlists/domain/playlist.dart';
+import 'package:albumflow/l10n/generated/app_localizations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -26,6 +27,7 @@ class AlbumListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context);
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
       child: Padding(
@@ -62,8 +64,9 @@ class AlbumListItem extends StatelessWidget {
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
-                              '${album.releaseYear} ・ ${album.totalTracks} 曲 '
-                              '・ ${album.formattedDuration}',
+                              '${album.releaseYear} ・ '
+                              '${l10n.trackCount(album.totalTracks)} ・ '
+                              '${album.formattedDuration}',
                               style: theme.textTheme.bodySmall,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -123,7 +126,7 @@ class _DeleteButton extends ConsumerWidget {
           );
         }
         return IconButton(
-          tooltip: 'このプレイリストから削除',
+          tooltip: AppLocalizations.of(context).removeFromPlaylistTooltip,
           icon: const Icon(Icons.delete_outline),
           onPressed: () => _delete(context, command),
         );
@@ -136,9 +139,12 @@ class _DeleteButton extends ConsumerWidget {
     if (!context.mounted) return;
     final result = command.result;
     if (result is Err<void>) {
+      final l10n = AppLocalizations.of(context);
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
-        ..showSnackBar(SnackBar(content: Text(result.error.displayMessage)));
+        ..showSnackBar(
+          SnackBar(content: Text(result.error.displayMessage(l10n))),
+        );
     }
   }
 }
@@ -196,9 +202,10 @@ class _QuickAddChip extends ConsumerWidget {
   Future<void> _add(BuildContext context, Command0<void> command) async {
     await command.execute();
     if (!context.mounted) return;
+    final l10n = AppLocalizations.of(context);
     final message = command.isCompleted
-        ? '「${target.name}」に「${album.title}」を追加しました'
-        : '追加に失敗しました。もう一度お試しください';
+        ? l10n.addedToPlaylistMessage(target.name, album.title)
+        : l10n.addFailedMessage;
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(SnackBar(content: Text(message)));
@@ -241,7 +248,7 @@ class _NoTargetsHint extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Text(
-      '登録先プレイリストが未設定です。右上の設定から追加してください。',
+      AppLocalizations.of(context).noTargetsHintMessage,
       style: Theme.of(context).textTheme.bodySmall,
     );
   }

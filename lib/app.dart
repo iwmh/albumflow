@@ -4,6 +4,7 @@ import 'package:albumflow/core/observability/app_logger.dart';
 import 'package:albumflow/core/router/app_router.dart';
 import 'package:albumflow/core/theme/app_theme.dart';
 import 'package:albumflow/features/auth/presentation/auth_controller.dart';
+import 'package:albumflow/l10n/generated/app_localizations.dart';
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -59,6 +60,8 @@ class _AlbumFlowAppState extends ConsumerState<AlbumFlowApp> {
       theme: AppTheme.darkTheme,
       routerConfig: router,
       debugShowCheckedModeBanner: false,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
     );
   }
 }

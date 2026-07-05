@@ -1,0 +1,182 @@
+{
+  "@@locale": "ja",
+  "playlistsScreenTitle": "プレイリスト",
+  "@playlistsScreenTitle": {
+    "description": "プレイリスト一覧画面のアプリバータイトル。"
+  },
+  "targetSettingsTooltip": "登録先の設定",
+  "@targetSettingsTooltip": {
+    "description": "登録先プレイリスト設定画面を開くアイコンボタンのツールチップ。"
+  },
+  "logoutTooltip": "ログアウト",
+  "@logoutTooltip": {
+    "description": "ログアウトアイコンボタンのツールチップ。"
+  },
+  "noPlaylistsMessage": "プレイリストがありません",
+  "@noPlaylistsMessage": {
+    "description": "プレイリストが 1 件もない場合に表示するメッセージ。"
+  },
+  "albumsScreenFallbackTitle": "アルバム・EP",
+  "@albumsScreenFallbackTitle": {
+    "description": "元プレイリスト名が取得できない場合のアルバム一覧画面のアプリバータイトル。"
+  },
+  "includeSinglesLabel": "シングルも表示",
+  "@includeSinglesLabel": {
+    "description": "シングルを一覧に含めるかどうかを切り替えるスイッチのラベル。"
+  },
+  "noAlbumsMessage": "アルバム・EP がありません",
+  "@noAlbumsMessage": {
+    "description": "抽出されたアルバム・EP が 1 件もない場合に表示するメッセージ。"
+  },
+  "targetSettingsScreenTitle": "登録先プレイリストの設定",
+  "@targetSettingsScreenTitle": {
+    "description": "登録先プレイリスト設定画面のアプリバータイトル。"
+  },
+  "targetSettingsDescription": "チェックしたプレイリストが、アルバムのワンタップ登録先になります。",
+  "@targetSettingsDescription": {
+    "description": "登録先プレイリスト設定画面の説明文。"
+  },
+  "trackCount": "{count} 曲",
+  "@trackCount": {
+    "description": "プレイリストやアルバムの曲数表示。",
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "appTagline": "プレイリストからアルバム・EP を抽出して\nワンタップでまとめて登録",
+  "@appTagline": {
+    "description": "ログイン画面に表示するアプリの説明文。"
+  },
+  "loginButtonLabel": "Spotify でログイン",
+  "@loginButtonLabel": {
+    "description": "ログインボタンのラベル。"
+  },
+  "loginFailedMessage": "ログインに失敗しました",
+  "@loginFailedMessage": {
+    "description": "AppError 以外の原因でログインに失敗した場合のメッセージ。"
+  },
+  "clientIdWarningMessage": "SPOTIFY_CLIENT_ID が未設定です。\n--dart-define=SPOTIFY_CLIENT_ID=... を指定して起動してください。",
+  "@clientIdWarningMessage": {
+    "description": "SPOTIFY_CLIENT_ID が未設定のときにログイン画面へ表示する警告。"
+  },
+  "retryButtonLabel": "再試行",
+  "@retryButtonLabel": {
+    "description": "エラー表示の再試行ボタンのラベル。"
+  },
+  "genericErrorMessage": "エラーが発生しました: {error}",
+  "@genericErrorMessage": {
+    "description": "AppError 以外のエラーが発生した場合の汎用メッセージ。",
+    "placeholders": {
+      "error": {
+        "type": "Object"
+      }
+    }
+  },
+  "removeFromPlaylistTooltip": "このプレイリストから削除",
+  "@removeFromPlaylistTooltip": {
+    "description": "アルバムをプレイリストから削除するボタンのツールチップ。"
+  },
+  "addedToPlaylistMessage": "「{targetName}」に「{albumTitle}」を追加しました",
+  "@addedToPlaylistMessage": {
+    "description": "アルバムを登録先プレイリストへ追加できたときのスナックバーメッセージ。",
+    "placeholders": {
+      "targetName": {
+        "type": "String"
+      },
+      "albumTitle": {
+        "type": "String"
+      }
+    }
+  },
+  "addFailedMessage": "追加に失敗しました。もう一度お試しください",
+  "@addFailedMessage": {
+    "description": "アルバムの追加に失敗したときのスナックバーメッセージ。"
+  },
+  "noTargetsHintMessage": "登録先プレイリストが未設定です。右上の設定から追加してください。",
+  "@noTargetsHintMessage": {
+    "description": "登録先プレイリストが 1 件も設定されていないときのヒント。"
+  },
+  "authExpiredMessage": "セッションの有効期限が切れました。再度ログインしてください。",
+  "@authExpiredMessage": {
+    "description": "AppError.authExpired のユーザー向けメッセージ。"
+  },
+  "networkErrorMessage": "ネットワークエラーが発生しました（{message}）。",
+  "@networkErrorMessage": {
+    "description": "AppError.network のユーザー向けメッセージ。",
+    "placeholders": {
+      "message": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownNetworkErrorMessage": "不明なネットワークエラー",
+  "@unknownNetworkErrorMessage": {
+    "description": "ネットワークエラーの詳細メッセージが得られない場合のフォールバック。"
+  },
+  "rateLimitedMessage": "リクエストが多すぎます。{seconds, plural, other{{seconds} 秒}}後に再試行してください。",
+  "@rateLimitedMessage": {
+    "description": "AppError.rateLimited のユーザー向けメッセージ。",
+    "placeholders": {
+      "seconds": {
+        "type": "int"
+      }
+    }
+  },
+  "forbiddenMessage": "権限がないため操作できませんでした。自分が作成した、または共同編集可能なプレイリストのみ操作できます。",
+  "@forbiddenMessage": {
+    "description": "AppError.forbidden（理由なし）のユーザー向けメッセージ。"
+  },
+  "forbiddenMessageWithReason": "権限がないため操作できませんでした（{reason}）。自分が作成した、または共同編集可能なプレイリストのみ操作できます。",
+  "@forbiddenMessageWithReason": {
+    "description": "AppError.forbidden（理由あり）のユーザー向けメッセージ。",
+    "placeholders": {
+      "reason": {
+        "type": "String"
+      }
+    }
+  },
+  "serverErrorMessage": "サーバーエラー（{statusCode}）が発生しました。",
+  "@serverErrorMessage": {
+    "description": "AppError.server のユーザー向けメッセージ。",
+    "placeholders": {
+      "statusCode": {
+        "type": "int"
+      }
+    }
+  },
+  "notFoundMessage": "{resource} が見つかりませんでした。",
+  "@notFoundMessage": {
+    "description": "AppError.notFound のユーザー向けメッセージ。",
+    "placeholders": {
+      "resource": {
+        "type": "String"
+      }
+    }
+  },
+  "unknownErrorMessage": "予期しないエラーが発生しました。",
+  "@unknownErrorMessage": {
+    "description": "AppError.unknown のユーザー向けメッセージ。"
+  },
+  "resourceLabelPlaylist": "プレイリスト",
+  "@resourceLabelPlaylist": {
+    "description": "ApiResource.playlist の表示名（notFoundMessage の {resource} に使用）。"
+  },
+  "resourceLabelTrack": "トラック",
+  "@resourceLabelTrack": {
+    "description": "ApiResource.track の表示名（notFoundMessage の {resource} に使用）。"
+  },
+  "resourceLabelAlbum": "アルバム",
+  "@resourceLabelAlbum": {
+    "description": "ApiResource.album の表示名（notFoundMessage の {resource} に使用）。"
+  },
+  "resourceLabelAuthToken": "認証トークン",
+  "@resourceLabelAuthToken": {
+    "description": "ApiResource.authToken の表示名（notFoundMessage の {resource} に使用）。"
+  },
+  "resourceLabelGeneric": "リソース",
+  "@resourceLabelGeneric": {
+    "description": "ApiResource.generic の表示名（notFoundMessage の {resource} に使用）。"
+  }
+}

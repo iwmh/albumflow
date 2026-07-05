@@ -3,7 +3,10 @@ import 'package:albumflow/core/observability/app_logger.dart';
 import 'package:dio/dio.dart';
 
 /// `DioException` を型付きの [AppError] に変換する。
-AppError mapDioException(DioException e, {String resource = 'リソース'}) {
+AppError mapDioException(
+  DioException e, {
+  ApiResource resource = ApiResource.generic,
+}) {
   // インターセプター等で既に AppError が設定されている場合はそれを優先。
   if (e.error is AppError) return e.error! as AppError;
 
@@ -29,7 +32,7 @@ AppError mapDioException(DioException e, {String resource = 'リソース'}) {
   if (status != null && status >= 500) {
     return AppError.server(statusCode: status);
   }
-  return AppError.network(message: e.message ?? '不明なネットワークエラー');
+  return AppError.network(message: e.message);
 }
 
 /// Spotify API のエラーレスポンス（`{"error": {"message": "..."}}`）から

@@ -134,7 +134,7 @@ return unknown(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  authExpired,TResult Function( String message)?  network,TResult Function( int retryAfterSeconds)?  rateLimited,TResult Function( String? reason)?  forbidden,TResult Function( int statusCode)?  server,TResult Function( String resource)?  notFound,TResult Function( Object? cause)?  unknown,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  authExpired,TResult Function( String? message)?  network,TResult Function( int retryAfterSeconds)?  rateLimited,TResult Function( String? reason)?  forbidden,TResult Function( int statusCode)?  server,TResult Function( ApiResource resource)?  notFound,TResult Function( Object? cause)?  unknown,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case AuthExpiredError() when authExpired != null:
 return authExpired();case NetworkError() when network != null:
@@ -161,7 +161,7 @@ return unknown(_that.cause);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  authExpired,required TResult Function( String message)  network,required TResult Function( int retryAfterSeconds)  rateLimited,required TResult Function( String? reason)  forbidden,required TResult Function( int statusCode)  server,required TResult Function( String resource)  notFound,required TResult Function( Object? cause)  unknown,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  authExpired,required TResult Function( String? message)  network,required TResult Function( int retryAfterSeconds)  rateLimited,required TResult Function( String? reason)  forbidden,required TResult Function( int statusCode)  server,required TResult Function( ApiResource resource)  notFound,required TResult Function( Object? cause)  unknown,}) {final _that = this;
 switch (_that) {
 case AuthExpiredError():
 return authExpired();case NetworkError():
@@ -184,7 +184,7 @@ return unknown(_that.cause);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  authExpired,TResult? Function( String message)?  network,TResult? Function( int retryAfterSeconds)?  rateLimited,TResult? Function( String? reason)?  forbidden,TResult? Function( int statusCode)?  server,TResult? Function( String resource)?  notFound,TResult? Function( Object? cause)?  unknown,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  authExpired,TResult? Function( String? message)?  network,TResult? Function( int retryAfterSeconds)?  rateLimited,TResult? Function( String? reason)?  forbidden,TResult? Function( int statusCode)?  server,TResult? Function( ApiResource resource)?  notFound,TResult? Function( Object? cause)?  unknown,}) {final _that = this;
 switch (_that) {
 case AuthExpiredError() when authExpired != null:
 return authExpired();case NetworkError() when network != null:
@@ -237,10 +237,10 @@ String toString() {
 
 
 class NetworkError implements AppError {
-  const NetworkError({required this.message});
+  const NetworkError({this.message});
   
 
- final  String message;
+ final  String? message;
 
 /// Create a copy of AppError
 /// with the given fields replaced by the non-null parameter values.
@@ -272,7 +272,7 @@ abstract mixin class $NetworkErrorCopyWith<$Res> implements $AppErrorCopyWith<$R
   factory $NetworkErrorCopyWith(NetworkError value, $Res Function(NetworkError) _then) = _$NetworkErrorCopyWithImpl;
 @useResult
 $Res call({
- String message
+ String? message
 });
 
 
@@ -289,10 +289,10 @@ class _$NetworkErrorCopyWithImpl<$Res>
 
 /// Create a copy of AppError
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
+@pragma('vm:prefer-inline') $Res call({Object? message = freezed,}) {
   return _then(NetworkError(
-message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
-as String,
+message: freezed == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -504,7 +504,7 @@ class NotFoundError implements AppError {
   const NotFoundError({required this.resource});
   
 
- final  String resource;
+ final  ApiResource resource;
 
 /// Create a copy of AppError
 /// with the given fields replaced by the non-null parameter values.
@@ -536,7 +536,7 @@ abstract mixin class $NotFoundErrorCopyWith<$Res> implements $AppErrorCopyWith<$
   factory $NotFoundErrorCopyWith(NotFoundError value, $Res Function(NotFoundError) _then) = _$NotFoundErrorCopyWithImpl;
 @useResult
 $Res call({
- String resource
+ ApiResource resource
 });
 
 
@@ -556,7 +556,7 @@ class _$NotFoundErrorCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') $Res call({Object? resource = null,}) {
   return _then(NotFoundError(
 resource: null == resource ? _self.resource : resource // ignore: cast_nullable_to_non_nullable
-as String,
+as ApiResource,
   ));
 }
 

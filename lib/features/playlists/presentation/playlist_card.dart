@@ -1,5 +1,6 @@
 import 'package:albumflow/core/theme/app_colors.dart';
 import 'package:albumflow/features/playlists/domain/playlist.dart';
+import 'package:albumflow/l10n/generated/app_localizations.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -12,12 +13,13 @@ class PlaylistCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     return ListTile(
       onTap: onTap,
       leading: _Artwork(imageUrl: playlist.imageUrl),
       title: Text(playlist.name, maxLines: 1, overflow: TextOverflow.ellipsis),
       subtitle: Text(
-        '${playlist.totalTracks} 曲'
+        '${l10n.trackCount(playlist.totalTracks)}'
         '${playlist.ownerDisplayName != null ? ' ・ ${playlist.ownerDisplayName}' : ''}',
         maxLines: 1,
         overflow: TextOverflow.ellipsis,

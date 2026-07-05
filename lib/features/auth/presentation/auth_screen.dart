@@ -3,6 +3,7 @@ import 'package:albumflow/core/command/result.dart';
 import 'package:albumflow/core/config/env.dart';
 import 'package:albumflow/core/error/app_error.dart';
 import 'package:albumflow/features/auth/presentation/auth_controller.dart';
+import 'package:albumflow/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -12,13 +13,14 @@ class AuthScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = AppLocalizations.of(context);
     // ディープリンクのコールバックで完了する completeLogin() のエラーを監視する。
     ref.listen(authControllerProvider, (_, next) {
       if (next.hasError && !next.isLoading) {
         final error = next.error;
         final message = error is AppError
-            ? error.displayMessage
-            : 'ログインに失敗しました';
+            ? error.displayMessage(l10n)
+            : l10n.loginFailedMessage;
         ScaffoldMessenger.of(context)
           ..hideCurrentSnackBar()
           ..showSnackBar(SnackBar(content: Text(message)));
@@ -46,7 +48,7 @@ class AuthScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  'プレイリストからアルバム・EP を抽出して\nワンタップでまとめて登録',
+                  l10n.appTagline,
                   style: Theme.of(context).textTheme.bodyMedium,
                   textAlign: TextAlign.center,
                 ),
@@ -70,7 +72,7 @@ class AuthScreen extends ConsumerWidget {
                                 ),
                               )
                             : const Icon(Icons.login),
-                        label: const Text('Spotify でログイン'),
+                        label: Text(l10n.loginButtonLabel),
                       );
                     },
                   ),
@@ -89,9 +91,12 @@ Future<void> _login(BuildContext context, Command0<void> loginCommand) async {
   if (!context.mounted) return;
   final result = loginCommand.result;
   if (result is Err<void>) {
+    final l10n = AppLocalizations.of(context);
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(content: Text(result.error.displayMessage)));
+      ..showSnackBar(
+        SnackBar(content: Text(result.error.displayMessage(l10n))),
+      );
   }
 }
 
@@ -109,8 +114,7 @@ class _ClientIdWarning extends StatelessWidget {
             const Icon(Icons.warning_amber, size: 32),
             const SizedBox(height: 8),
             Text(
-              'SPOTIFY_CLIENT_ID が未設定です。\n'
-              '--dart-define=SPOTIFY_CLIENT_ID=... を指定して起動してください。',
+              AppLocalizations.of(context).clientIdWarningMessage,
               style: Theme.of(context).textTheme.bodySmall,
               textAlign: TextAlign.center,
             ),

@@ -1,6 +1,12 @@
+import 'package:albumflow/l10n/generated/app_localizations.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'app_error.freezed.dart';
+
+/// [AppError.notFound] が対象とするリソースの種類。
+///
+/// 表示名はロケール依存のため、名前ではなく種類のみをここで表現する。
+enum ApiResource { playlist, track, album, authToken, generic }
 
 /// アプリ全体で扱う型付きエラー。
 ///
@@ -11,7 +17,7 @@ sealed class AppError with _$AppError implements Exception {
   const factory AppError.authExpired() = AuthExpiredError;
 
   /// ネットワーク到達不可・タイムアウトなど。
-  const factory AppError.network({required String message}) = NetworkError;
+  const factory AppError.network({String? message}) = NetworkError;
 
   /// レート制限（HTTP 429）。`retryAfterSeconds` 秒後に再試行可能。
   const factory AppError.rateLimited({required int retryAfterSeconds}) =
@@ -24,7 +30,8 @@ sealed class AppError with _$AppError implements Exception {
   const factory AppError.server({required int statusCode}) = ServerError;
 
   /// リソースが見つからない（HTTP 404）。
-  const factory AppError.notFound({required String resource}) = NotFoundError;
+  const factory AppError.notFound({required ApiResource resource}) =
+      NotFoundError;
 
   /// その他の予期しないエラー。
   const factory AppError.unknown({Object? cause}) = UnknownError;
@@ -32,17 +39,33 @@ sealed class AppError with _$AppError implements Exception {
 
 /// ユーザー向けメッセージ。
 extension AppErrorMessage on AppError {
-  String get displayMessage => switch (this) {
-    AuthExpiredError() => 'セッションの有効期限が切れました。再度ログインしてください。',
-    NetworkError(:final message) => 'ネットワークエラーが発生しました（$message）。',
-    RateLimitedError(:final retryAfterSeconds) =>
-      'リクエストが多すぎます。$retryAfterSeconds 秒後に再試行してください。',
+  String displayMessage(AppLocalizations l10n) => switch (this) {
+    AuthExpiredError() => l10n.authExpiredMessage,
+    NetworkError(:final message) => l10n.networkErrorMessage(
+      message ?? l10n.unknownNetworkErrorMessage,
+    ),
+    RateLimitedError(:final retryAfterSeconds) => l10n.rateLimitedMessage(
+      retryAfterSeconds,
+    ),
     ForbiddenError(:final reason) =>
-      '権限がないため操作できませんでした'
-          '${reason != null ? '（$reason）' : ''}。'
-          '自分が作成した、または共同編集可能なプレイリストのみ操作できます。',
-    ServerError(:final statusCode) => 'サーバーエラー（$statusCode）が発生しました。',
-    NotFoundError(:final resource) => '$resource が見つかりませんでした。',
-    UnknownError() => '予期しないエラーが発生しました。',
+      reason != null
+          ? l10n.forbiddenMessageWithReason(reason)
+          : l10n.forbiddenMessage,
+    ServerError(:final statusCode) => l10n.serverErrorMessage(statusCode),
+    NotFoundError(:final resource) => l10n.notFoundMessage(
+      resource.label(l10n),
+    ),
+    UnknownError() => l10n.unknownErrorMessage,
+  };
+}
+
+/// [ApiResource] のユーザー向け表示名。
+extension ApiResourceLabel on ApiResource {
+  String label(AppLocalizations l10n) => switch (this) {
+    ApiResource.playlist => l10n.resourceLabelPlaylist,
+    ApiResource.track => l10n.resourceLabelTrack,
+    ApiResource.album => l10n.resourceLabelAlbum,
+    ApiResource.authToken => l10n.resourceLabelAuthToken,
+    ApiResource.generic => l10n.resourceLabelGeneric,
   };
 }

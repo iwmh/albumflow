@@ -1,4 +1,5 @@
 import 'package:albumflow/core/error/app_error.dart';
+import 'package:albumflow/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 /// エラー表示＋再試行ボタン。
@@ -10,9 +11,10 @@ class ErrorView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
     final message = error is AppError
-        ? (error as AppError).displayMessage
-        : 'エラーが発生しました: $error';
+        ? (error as AppError).displayMessage(l10n)
+        : l10n.genericErrorMessage(error);
 
     return Center(
       child: Padding(
@@ -27,7 +29,7 @@ class ErrorView extends StatelessWidget {
               const SizedBox(height: 16),
               FilledButton.tonal(
                 onPressed: onRetry,
-                child: const Text('再試行'),
+                child: Text(l10n.retryButtonLabel),
               ),
             ],
           ],

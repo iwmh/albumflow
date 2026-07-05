@@ -4,6 +4,7 @@ import 'package:albumflow/core/widgets/loading_view.dart';
 import 'package:albumflow/features/auth/presentation/auth_controller.dart';
 import 'package:albumflow/features/playlists/presentation/playlist_card.dart';
 import 'package:albumflow/features/playlists/presentation/playlists_controller.dart';
+import 'package:albumflow/l10n/generated/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -15,18 +16,19 @@ class PlaylistsScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final playlists = ref.watch(playlistsControllerProvider);
+    final l10n = AppLocalizations.of(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('プレイリスト'),
+        title: Text(l10n.playlistsScreenTitle),
         actions: <Widget>[
           IconButton(
-            tooltip: '登録先の設定',
+            tooltip: l10n.targetSettingsTooltip,
             icon: const Icon(Icons.settings),
             onPressed: () => context.push(AppRoutes.targetSettings),
           ),
           IconButton(
-            tooltip: 'ログアウト',
+            tooltip: l10n.logoutTooltip,
             icon: const Icon(Icons.logout),
             onPressed: () => ref
                 .read(authControllerProvider.notifier)
@@ -43,7 +45,7 @@ class PlaylistsScreen extends ConsumerWidget {
         ),
         data: (items) {
           if (items.isEmpty) {
-            return const Center(child: Text('プレイリストがありません'));
+            return Center(child: Text(l10n.noPlaylistsMessage));
           }
           return RefreshIndicator(
             onRefresh: () =>

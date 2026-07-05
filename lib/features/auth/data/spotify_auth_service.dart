@@ -96,7 +96,7 @@ class SpotifyAuthService {
       );
     } on DioException catch (e) {
       // トークン取得失敗は再認証が必要とみなす。
-      final mapped = mapDioException(e, resource: '認証トークン');
+      final mapped = mapDioException(e, resource: ApiResource.authToken);
       throw mapped is NetworkError ? mapped : const AppError.authExpired();
     }
   }
