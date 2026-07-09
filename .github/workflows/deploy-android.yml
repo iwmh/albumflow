@@ -74,7 +74,7 @@ jobs:
           fi
 
       - name: Upload App Bundle artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: app-release-bundle
           path: build/app/outputs/bundle/release/app-release.aab
