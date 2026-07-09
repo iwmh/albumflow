@@ -5,6 +5,7 @@ on:
     workflows: [ CI ]
     types: [ completed ]
     branches: [ main, develop ]
+  workflow_dispatch:
 
 env:
   FLUTTER_VERSION: '3.44.0'
@@ -13,7 +14,7 @@ jobs:
   build-ios:
     name: Build iOS and distribute to Firebase App Distribution
     runs-on: macos-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - name: Checkout repository
