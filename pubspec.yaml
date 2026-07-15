@@ -33,7 +33,7 @@ dependencies:
   crypto: ^3.0.7
   cupertino_icons: ^1.0.8
   dio: ^5.9.2
-  firebase_core: ^4.11.0
+  firebase_core: ^4.12.1
   firebase_crashlytics: ^5.2.4
   firebase_performance: ^0.11.4+3
   flutter:
